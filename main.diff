@@ -1,0 +1,3 @@
+[storage_cassandra]
+seed_hosts = 172.21.0.3
+keyspace = OpsCenter_Storage_main
