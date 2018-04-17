@@ -1,17 +1,17 @@
-# datastaxOpscDCDocker
+# DataStax opscenter with separate cluster for opscenter keyspace
 
 ## About
 
 This github covers setting up a separate DataStax cluster to hold the Opscenter keyspace to for the main DataStax cluster.  Two main docker containers are used:   DataStax Server and DataStax opscenter.
 
 
-The DataStax images are well documented at this github location  [https://github.com/datastax/docker-images/]()
+The DataStax images are well documented at this github location  [https://github.com/datastax/docker-images/](https://github.com/datastax/docker-images/)
 
 
 ## Getting Started
 1. Prepare Docker environment
 2. Pull this github into a directory  `https://github.com/jphaugla/datastaxOpscDCDocker.git`
-3. Follow notes from DataStax Docker github to pull the needed DataStax images.  Directions are here:  [https://github.com/datastax/docker-images/#datastax-platform-overview]().  Don't get too bogged down here.  The pull command is provided with this github in pull.sh. It is requried to have the docker login and subscription complete before running the pull.  The also included docker-compose.yaml handles most everything else.
+3. Follow notes from DataStax Docker github to pull the needed DataStax images.  Directions are here:  [https://github.com/datastax/docker-images/#datastax-platform-overview](https://github.com/datastax/docker-images/#datastax-platform-overview).  Don't get too bogged down here.  The pull command is provided with this github in pull.sh. It is requried to have the docker login and subscription complete before running the pull.  The also included docker-compose.yaml handles most everything else.
 4. Open terminal, then: `docker-compose up -d`
 5. Verify DataStax is working for both hosts:
 ```bash
@@ -25,16 +25,16 @@ docker exec dseops cqlsh -u cassandra -p cassandra -e "desc keyspaces"
 ## Set up Opscenter
 
 This Opscenter storage is documented here:  
-`https://docs.datastax.com/en/latest-opscenter/opsc/configure/opscStoringCollectionDataDifferentCluster_t.html`
+[https://docs.datastax.com/en/latest-opscenter/opsc/configure/opscStoringCollectionDataDifferentCluster_t.html](https://docs.datastax.com/en/latest-opscenter/opsc/configure/opscStoringCollectionDataDifferentCluster_t.html)
 
 This tutorial provides specific commands for this environment, so it shouldn't be necessary to refer to the docs, but they're a handy reference if something goes awry.  
 
 
 1. Open up browser to opscenter and add each of the two seed nodes to be managed by Opscenter.  Note:   Each node is assigned to a separate cluster.  The dse node is in the "main" cluster and dseops is in OPSCstore.  The idea is to have the opscenter cluster for the "main" cluster to be stored in the "OPSCstore" cluster.  Use the host names dse and dseops to add the clusters to opscenter.  This link describes how to add each of the 1 node clusters:
-`https://docs.datastax.com/en/opscenter/6.1/opsc/online_help/opscAddingCluster_t.html`
+[https://docs.datastax.com/en/opscenter/6.1/opsc/online_help/opscAddingCluster_t.html](https://docs.datastax.com/en/opscenter/6.1/opsc/online_help/opscAddingCluster_t.html)
 NOTE:  A listing of the opscenter-clusters directory should show the OPSCenter.conf and main.conf files.
 
-2. When the clusters are added to opscenter, a separate file will be created in the opscenter node for each cluster managed by ospcenter.  The following steps will edit the mmain.conf file in opscenter so the "main" cluster will have its opcenter data stored in the "OPSCstore" cluster.  All the seed nodes for "OPSCstore" should be included in the main.diff file.  Edit the file main.diff to have the dseops as the seed_host. 
+2. When the clusters are added to opscenter, a separate file will be created in the opscenter node for each cluster managed by ospcenter.  The following steps will edit the mmain.conf file in opscenter so the "main" cluster will have its opcenter data stored in the "OPSCstore" cluster.  All the seed nodes for "OPSCstore" should be included in the main.diff file.  Verify the file main.diff has dseops as the seed_host. 
 
 4. Get the main.conf file from the opscenter node using docker
 ```bash
