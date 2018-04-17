@@ -14,7 +14,7 @@ services:
       - ./opscenter:/var/lib/opscenter
       - ./opscenter-clusters:/opt/opscenter/conf/clusters
   main_node:
-    image: "store/datastax/dse-server:5.1.6"
+    image: "datastax/dse-server"
     container_name: "dse"
     hostname: "dse"
     ports:
@@ -40,7 +40,7 @@ services:
       - ./logs:/var/lib/cassandra/commit_logs
       - ./cache:/var/lib/cassandra/saved_caches
   ops_node:
-    image: "store/datastax/dse-server:5.1.6"
+    image: "datastax/dse-server"
     container_name: "dseops"
     hostname: "dseops"
     environment:
